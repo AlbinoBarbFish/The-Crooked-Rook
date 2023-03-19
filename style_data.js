@@ -4,8 +4,8 @@ let style_data = {
     black_col: 'rgb(255,   0,   0)',
     neutral_col: 'rgb(  0, 200, 100)',
     //Squares
-    light_square_col: 'rgb(239, 217, 181)',
-    dark_square_col: 'rgb(181, 136,  99)',
+    light_square_col: 'rgb(255, 196, 136)',
+    dark_square_col: 'rgb(230, 115,   0)',
     light_mud_col: 'rgb(125, 85, 45)',
     dark_mud_col: 'rgb(82, 56, 30)',
     light_etherial_col: 'rgb(150, 51, 196)',
