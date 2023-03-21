@@ -1,13 +1,13 @@
-preset_variants[5].push({
+preset_variants[folders.other].push({
     name: "Xiangqi",
     description: "Chinese Chess",
 	width: 9,
 	height: 10,
 
 	all_pieces: [
-	{
-	    name: "Peasant",
-	    description: "Moves one step forwards. If it crosses the river, it can move sideways.",
+		{
+			name: "Peasant",
+			description: "Moves one step forwards. If it crosses the river, it can move sideways.",
             sprite: "peasant",
             symbol: "p",
             notation: "",
@@ -54,8 +54,8 @@ preset_variants[5].push({
             name: "King",
             description: "Moves one step cardinally. Must stay in the palace. Can fly to kill opposing king.",
             sprite: "king",
-	    symbol: "k",
-	    move: "[W]aZ{3 2}+[R]BP{King}",
+			symbol: "k",
+			move: "[W]aZ{3 2}+[R]BP{King}",
             attributes: [attrib.royal]
 		},
 	],

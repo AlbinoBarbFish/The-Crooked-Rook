@@ -1,15 +1,11 @@
-preset_variants[0].push({
+preset_variants[folders.chess].push({
     name: "Chess",
-    description: "If you insist...",
+    author: "Around 1475 in Valencia, Spain",
+    description: "Classic Chess, with some slight differences. Some endgame rules (50 move, repetition, etc) aren't implemented. Check/checkmate isn't enforced, you win by capturing the king. Since check isn't detected, you can castle from, through, and into check.",
 	width: 8,
 	height: 8,
-	has_hand: false,
-	turn_list: [false, true],
-	flip_colors: false,
-	can_pass: false,
 	wins: [ends.royal_capture],
 	draws: [ends.stalemate],
-    next_turn_win: true,
     castle_length: 2,
 
 	all_pieces: [
@@ -22,8 +18,6 @@ preset_variants[0].push({
 			move: "i[0 -1 1 2]Bae+[0 -1 1 1]ae+([1 -1 1 1],[-1 -1 1 1])ca",
             promotions: [{ white: 1, black: 0, to: ["NSNR"], on: [events.enter] }],
             attributes: [attrib.ep_captured, attrib.ep_capturer],
-			held_piece: -1,
-			held_move: ""
 		},
 		{
             name: "Rook",
@@ -31,10 +25,7 @@ preset_variants[0].push({
             sprite: "rook",
 			symbol: "R",
 			move: "[R]Ba",
-			promotions: [],
 			attributes: [attrib.castle_to],
-			held_piece: -1,
-			held_move: ""
 		},
 		{
             name: "Knight",
@@ -42,10 +33,6 @@ preset_variants[0].push({
             sprite: "knight",
 			symbol: "N",
 			move: "[N]a",
-			promotions: [],
-			attributes: [],
-			held_piece: -1,
-			held_move: ""
 		},
 		{
             name: "Bishop",
@@ -53,10 +40,6 @@ preset_variants[0].push({
             sprite: "bishop",
 			symbol: "B",
 			move: "[B]Ba",
-			promotions: [],
-			attributes: [],
-			held_piece: -1,
-			held_move: ""
 		},
 		{
             name: "Queen",
@@ -64,10 +47,6 @@ preset_variants[0].push({
             sprite: "queen",
 			symbol: "Q",
 			move: "[Q]Ba",
-			promotions: [],
-			attributes: [],
-			held_piece: -1,
-			held_move: ""
 		},
 		{
             name: "King",
@@ -75,23 +54,13 @@ preset_variants[0].push({
             sprite: "king",
 			symbol: "K",
             move: "[K]a+i[1 0 2 -1]BemP{Rook}",
-			promotions: [],
 			attributes: [attrib.royal, attrib.castle_from],
-			held_piece: -1,
-			held_move: ""
 		},
 	],
     setup: "bR bN bB bQ bK bB bN bR 8bp",
     copy: "flip",
-    starting_hands: {white: [], black: []},
-	active_squares: "11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111",
 	zones: [
 		"00000000 00000000 00000000 00000000 00000000 00000000 00000000 11111111",
 		"11111111 00000000 00000000 00000000 00000000 00000000 00000000 00000000",
-	],
-    mud: "00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000",
-	sanctuary: "00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000",
-    etherial: "00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000",
-    pacifist: "00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000",
-    fischer_zones: [],
+	]
 });

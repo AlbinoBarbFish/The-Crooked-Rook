@@ -1,4 +1,4 @@
-preset_variants[4].push({
+preset_variants[folders.ccit].push({
     name: "No Step On Snek",
     author: "Eumorpha",
     description: "Popo Chess Snake Contest board. Snakes promote to Hydras on the last rank. Basilisks act as Short Rooks (R5) and cannot castle. Frogs act as Ferz + Threeleaper (yes, it can leap across the board holes on the edges). The Centaur acts as Mann + Knight.",

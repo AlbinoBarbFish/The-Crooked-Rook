@@ -1,15 +1,10 @@
-preset_variants[1].push({
+preset_variants[folders.shogi].push({
     name: "Shogi",
-    description: "Japanese Chess",
+    description: "Japanese Chess. You can drop pieces after you capture them. Drop restrictions and some endgame rules are not implemented.",
 	width: 9,
 	height: 9,
 	has_hand: true,
-	turn_list: [false, true],
-	flip_colors: false,
-	can_pass: false,
-	wins: [ends.royal_capture],
-	draws: [ends.stalemate],
-	next_turn_win: true,
+	wins: [ends.royal_capture, ends.stalemate],
 
 	all_pieces: [
 		{
@@ -97,7 +92,7 @@ preset_variants[1].push({
         {
             name: "+Bishop",
             description: "Dragon Horse. Moves as a Bishop or King.",
-            sprite: "mage",
+            sprite: "kelpie",
             symbol: "B",
             move: "([B],[K])Ba",
             attributes: [attrib.transform_on_death],

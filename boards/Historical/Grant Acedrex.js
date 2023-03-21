@@ -1,4 +1,4 @@
-preset_variants[2].push({
+preset_variants[folders.historical].push({
     name: "Grant Acedrex",
     description: "Grant Acedrex",
 	width: 12,

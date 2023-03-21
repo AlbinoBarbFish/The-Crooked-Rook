@@ -1,4 +1,4 @@
-preset_variants[2].push({
+preset_variants[folders.historical].push({
     name: "Courier Chess",
     description: "12th-century Chess variant. The added pieces are Mann, Elephant, Ferz, and Wazir. There is no castling.",
 	width: 12,

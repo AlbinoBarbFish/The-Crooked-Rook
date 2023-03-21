@@ -1,4 +1,4 @@
-preset_variants[4].push({
+preset_variants[folders.ccit].push({
     name: "LeapyMakruk",
     description: "8x8 board with Peasants on the 3rd row, which promote on the 7th row. The majority of the pieces can capture like a Knight, including the King.",
 	width: 8,

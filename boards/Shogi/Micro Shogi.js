@@ -1,4 +1,4 @@
-preset_variants[1].push({
+preset_variants[folders.shogi].push({
     name: "Micro Shogi",
     description: "Small version of Shogi. Pieces promote/demote when capturing: Pawn <=> Knight, Gold <=> Rook, Bishop <=> Tokin, and Silver <=> Lance.",
 	width: 4,

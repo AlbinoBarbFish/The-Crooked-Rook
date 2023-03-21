@@ -1,4 +1,4 @@
-preset_variants[2].push({
+preset_variants[folders.historical].push({
     name: "Chaturanga",
     description: "Ancient ancestor of Chess-like games. Queen is replaced with Ferz, Bishop with Alfil, Pawns lose their double-step and promote to Ferz only, and King can't castle. Win by capturing, stalemating, or baring the opponent's King.",
 	width: 8,
@@ -39,10 +39,6 @@ preset_variants[2].push({
             sprite: "elephant",
 			symbol: "G",
 			move: "[A]a",
-			promotions: [],
-			attributes: [],
-			held_piece: -1,
-			held_move: ""
 		},
 		{
             name: "Mantri",

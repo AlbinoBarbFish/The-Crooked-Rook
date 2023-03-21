@@ -6,6 +6,7 @@ preset_variants[folders.chess].push({
 	wins: [ends.royal_capture],
 	draws: [ends.stalemate],
 	next_turn_win: true,
+	castle_length: 2,
 
 	all_pieces: [
 		{

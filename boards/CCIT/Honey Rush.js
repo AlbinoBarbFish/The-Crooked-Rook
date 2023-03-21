@@ -1,7 +1,7 @@
-preset_variants[4].push({
+preset_variants[folders.ccit].push({
     name: "Honey Rush",
     author: "SamG_007",
-    description: "A 9x6 board featuring the Bear. There are the King, the Pawn, the Bishop Switch (can change its square color by moving one step forward), the Rook (can't castle), the Bear, the Honey Bowl, the Snake (it's different from the default chesscraft Snake), and the Bomber. Some tips for this board: Keep a solid pawn structure, and don't move the Honey Bowls too early. It's better to promote the pawn-type units only in the endgame. Don't sacrifice too early important pieces, like the Bear and the Snake, and always keep an eye on the enemy Bombers' trajectory. Have fun :)",
+    description: "A 9x6 board featuring the Bear. There are the King, the Pawn, the Bishop Switch (can change its square color by moving one step forward), the Rook (can't castle), the Bear, the Honey Bowl, the Snake (it's different from the default chesscraft Snake), and the Bomber. Some tips for this board: Keep a solid pawn structure, and don't move the Honey Bowls too early. It's better to promote the pawn-type units only in the endgame. Don't sacrifice too early important pieces, like the Bear and the Snake, and always keep an eye on the enemy Bombers' trajectory. Have fun :)\nNOTE: Restrictors aren't yet implemented in The Crooked Rook.",
     width: 6,
 	height: 9,
 

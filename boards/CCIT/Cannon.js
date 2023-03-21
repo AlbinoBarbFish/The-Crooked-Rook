@@ -1,4 +1,4 @@
-preset_variants[4].push({
+preset_variants[folders.ccit].push({
     name: "Cannon :>",
     author: "Wish_Axolotl",
     description: "Simple ; )",

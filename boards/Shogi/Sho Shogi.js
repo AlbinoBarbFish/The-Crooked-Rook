@@ -1,4 +1,4 @@
-preset_variants[1].push({
+preset_variants[folders.shogi].push({
     name: "Sho Shogi",
     description: "Precursor to the modern Shogi game. No drops. Adds the Drunk Elephant, which promotes to a second King.",
 	width: 9,

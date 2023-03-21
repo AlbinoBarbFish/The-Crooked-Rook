@@ -1,4 +1,4 @@
-preset_variants[2].push({
+preset_variants[folders.historical].push({
     name: "Courier Chess (starting moves)",
     description: "12th-century Chess variant. The added pieces are Mann, Elephant, Ferz, and Wazir. There is no castling. The first 4 moves are forced to be the traditional starting moves.",
 	width: 12,

@@ -1,4 +1,4 @@
-preset_variants[1].push({
+preset_variants[folders.shogi].push({
     name: "Heian Shogi",
     description: "Precursor to the modern Shogi games. Reconstructed rules are speculative. No drops. Everything except King and Gold can promote to Gold in the last 3 ranks.",
 	width: 8,
