@@ -1,4 +1,4 @@
-function render_board(){
+﻿function render_board(){
     let c = document.getElementById("board_canvas");
     let ctx = c.getContext("2d");
 
@@ -199,16 +199,22 @@ function render_extras() {
     if (board_history[view_move].victory != -1) {
         switch (board_history[view_move].victory) {
             case 0:
+            case false:
                 ti.innerHTML += "; Winner: White";
                 break;
             case 0.5:
                 ti.innerHTML += "; Winner: Draw";
                 break;
             case 1:
+            case true:
                 ti.innerHTML += "; Winner: Black";
                 break;
         }
     }
+
+    //Name and Description
+    document.getElementById("board_name_header").innerHTML = game_data.name;
+    document.getElementById("board_description_header").innerHTML = game_data.description;
 
     //Move history
     let hist_div = document.getElementById("move_history");

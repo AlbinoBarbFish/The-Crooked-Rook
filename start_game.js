@@ -1,4 +1,8 @@
-function start_game(json_data) {
+function start_game(json_data, seed) {
+    if(seed === undefined) {
+        seed = cyrb128(time_as_string())[0];
+    }
+    let rand = mulberry32(seed);
     game_data = JSON.parse(JSON.stringify(json_data));
     if (game_data.name === undefined) { console.error("Variant must have a name"); return; }
     if (game_data.description === undefined) { game_data.description = ""; }
@@ -180,7 +184,7 @@ function start_game(json_data) {
             if (piece === -1) {
                 continue;
             }
-            set_piece_space(piece, col, pos, true);
+            set_piece_space(piece, col, pos, rand, true);
             pos++;
         }
         else if (char === ".") {
@@ -206,7 +210,7 @@ function start_game(json_data) {
                     continue;
                 }
                 for (let b = 0; b < num; b++) {
-                    set_piece_space(piece, col, pos, true);
+                    set_piece_space(piece, col, pos, rand, true);
                     pos++;
                 }
             }
@@ -224,7 +228,7 @@ function start_game(json_data) {
             if (!board.black_ss.get(sq) && !board.white_ss.get(sq)) {
                 let col = (board.black_ss.get(sq_orig) && board.white_ss.get(sq_orig)) ? "n" :
                     board.black_ss.get(sq_orig) ? "w" : "b";
-                set_piece_space(identify_piece(sq_orig), col, sq);
+                set_piece_space(identify_piece(sq_orig), col, sq, rand);
             }
         }
     }
@@ -590,7 +594,7 @@ function generate_move_ss(string_orig) {
     return ret;
 }
 
-function set_piece_space(piece, col, pos, apply_fischer = false) {
+function set_piece_space(piece, col, pos, rand, apply_fischer = false) {
     //If this is a fischer random space, set its position randomly
     if (apply_fischer) {
         let my_fischer_zone = new squareset(game_data.width * game_data.height);
@@ -608,7 +612,7 @@ function set_piece_space(piece, col, pos, apply_fischer = false) {
                     possible_squares.push(a);
                 }
             }
-            pos = possible_squares[Math.floor(Math.random() * possible_squares.length)];
+            pos = possible_squares[Math.floor(rand() * possible_squares.length)];
         }
     }
 

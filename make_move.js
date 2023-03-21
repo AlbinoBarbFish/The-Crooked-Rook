@@ -29,7 +29,7 @@ function make_move(src_x, src_y, dst_x, dst_y, promotion) {
         notation = this_piece.notation;
     }
     //Find how many pieces can go to the same spot
-    let in_same_row = false, in_same_column = false, needs_specification = false;;
+    let in_same_row = false, in_same_column = false, needs_specification = false;
     let other_pieces = ss_and(board.turn ? board.black_ss : board.white_ss, board.piece_ss[this_id]);
     for (; !other_pieces.is_zero(); other_pieces.pop()) {
         let pos = other_pieces.get_ls1b();
@@ -63,6 +63,7 @@ function make_move(src_x, src_y, dst_x, dst_y, promotion) {
     }
     //To space
     notation += file(dst_sq % game_data.width) + rank(Math.floor(dst_sq / game_data.width));
+    let promote_notation = "";
     //Need to add + and #
 
     if (src_sq === dst_sq) {
@@ -92,10 +93,10 @@ function make_move(src_x, src_y, dst_x, dst_y, promotion) {
             else if (!on_board(king_sq) || !on_board(rook_sq)) {
                 console.log("Trying to castle to non-existent space");
             }
-            else if (dst_sq != king_sq && (board.black_ss.get(king_sq) || board.white_ss.get(king_sq))) {
+            else if (king_sq != dst_sq && (board.black_ss.get(king_sq) || board.white_ss.get(king_sq))) {
                 console.log("Trying to castle king to occupied space");
             }
-            else if (src_sq != rook_sq && (board.black_ss.get(rook_sq) || board.white_ss.get(rook_sq))) {
+            else if (rook_sq != src_sq && rook_sq != dst_sq && (board.black_ss.get(rook_sq) || board.white_ss.get(rook_sq))) {
                 console.log("Trying to castle rook to occupied space");
             }
             else {
@@ -143,6 +144,8 @@ function make_move(src_x, src_y, dst_x, dst_y, promotion) {
             clear_space(my_space);
             spawn_piece(my_space, this_piece.held_piece, spawn_col);
             board.has_moved_ss.set_on(my_space);
+            let new_piece = game_data.all_pieces[this_piece.held_piece];
+            promote_notation = "=" + (new_piece.notation ?? new_piece.symbol);
             //Old values of this_piece and piece_id should be used, so don't update them
         }
         if (!this_piece.attributes.includes(attrib.save_enemy)) {
@@ -266,9 +269,11 @@ function make_move(src_x, src_y, dst_x, dst_y, promotion) {
             clear_space(my_space);
             spawn_piece(my_space, my_promotion, spawn_col);
             board.has_moved_ss.set_on(my_space);
-            notation += "=" + game_data.all_pieces[my_promotion].symbol;
+            let new_piece = game_data.all_pieces[my_promotion];
+            promote_notation = "=" + (new_piece.notation ?? new_piece.symbol);
         }
     }
+    notation += promote_notation;
 
     //Leave EP mask
     if (this_piece.attributes.includes(attrib.ep_captured)) {

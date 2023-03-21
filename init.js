@@ -28,6 +28,28 @@ function add_image(dname, fname) {
     }
 }
 
+//Doesn't work, it's too long!
+function print_all_boards() {
+    let str = "{";
+    for(let a = 0; a < preset_variants.length; a++) {
+        for(let b = 0; b < preset_variants[a].length; b++) {
+            str += "\""+preset_variants[a][b].name+"\": "+JSON.stringify(preset_variants[a][b]);
+            if(a < preset_variants.length-1 || b < preset_variants[a].length-1) {
+                str += ",";
+            }
+        }
+    }
+    str += "}";
+    return str;
+}
+//Will only work if you have access to the database
+function update_all_boards() {
+    for(let a = 0; a < preset_variants.length; a++) {
+        for(let b = 0; b < preset_variants[a].length; b++) {
+            firebase.database().ref("boards").child(preset_variants[a][b].name).update(preset_variants[a][b]);
+        }
+    }
+}
 function add_files_to_dropdown() {
     let parent = document.getElementById("variantField");
     let category = document.getElementById("categoryField");

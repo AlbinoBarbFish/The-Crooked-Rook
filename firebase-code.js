@@ -30,10 +30,13 @@ function show_message (message) {
 }
 
 let all_boards_ref = firebase.database().ref(`boards`);
-function set_board(board_name) {
+function set_board(board_name, seed) {
+    if(seed === undefined) {
+        seed = cyrb128(time_as_string())[0];
+    }
     let my_board = stored_boards.find(e => e.name === board_name);
     if (my_board) {
-        start_game(my_board.board);
+        start_game(my_board.board, seed);
         return;
     }
     all_boards_ref.child(board_name).once("value", (snapshot) => {
@@ -44,7 +47,7 @@ function set_board(board_name) {
         if (!this_board) {
             show_error("Trying to start a non-existent board");
         }
-        start_game(this_board);
+        start_game(this_board, seed);
     });
 }
 
@@ -95,6 +98,7 @@ function resign() {
     if(in_multiplayer_game && my_res_ref) {
         show_db_set("Setting my resign");
         my_res_ref.set(true);
+        board_history[board_history.length-1].victory = !my_col;
         switch_to_single_player();
     }
 }
@@ -139,6 +143,7 @@ let on_opp_resign = (snapshot) => {
     if(snapshot.val() === true && in_multiplayer_game) {
         in_multiplayer_game = false;
         show_message("Opponent resigned");
+        board_history[board_history.length-1].victory = my_col;
         close_match();
     }
 }
@@ -241,7 +246,7 @@ let other_ver_change = (snapshot) => {
     }
 }
 
-function connect_to_match(match_ref_str, col, new_my_name, new_opp_name, owner, board_name) {
+function connect_to_match(match_ref_str, col, new_my_name, new_opp_name, owner, board_name, seed) {
     if(match_ref_str != undefined) {
         my_match_ref = firebase.database().ref(`match/${match_ref_str}`);
     }
@@ -264,12 +269,13 @@ function connect_to_match(match_ref_str, col, new_my_name, new_opp_name, owner, 
         my_lobby_ref.remove();
         my_lobby_ref = undefined;
     }
-    set_board(board_name);
+    set_board(board_name, seed);
     board_page();
 }
 
 function join_game(match_id) {
     if(in_multiplayer_game) {
+        show_error("Trying to join game when you're already in a game");
         return;
     }
     let t_match_ref = firebase.database().ref(`lobby/${match_id}`);
@@ -299,8 +305,10 @@ function join_game(match_id) {
         //Create the match
         my_match_ref = firebase.database().ref(`match`).push();
         show_db_set("Setting my_match to join the game");
+        let seed = cyrb128(time_as_string())[0];
         my_match_ref.update({
             board_name: t_match.board_name,
+            seed,
             j: {
                 name: this_user.name,
                 uid: user_id,
@@ -314,10 +322,10 @@ function join_game(match_id) {
         });
         //Send match link to owner
         show_db_set("Updating lobby entry to start match")
-        t_match_ref.update({goto: my_match_ref.key, joiner_name: this_user.name, owner_col});
+        t_match_ref.update({goto: my_match_ref.key, joiner_name: this_user.name, owner_col, seed});
         t_match_ref = undefined;
         //Start match locally
-        connect_to_match(undefined, !owner_col, this_user.name, t_match.owner_name, false, t_match.board_name)
+        connect_to_match(undefined, !owner_col, this_user.name, t_match.owner_name, false, t_match.board_name, seed)
     });
 }
 
@@ -332,7 +340,6 @@ function add_lobby() {
     }
     let board_name = document.getElementById("board_name").value;
     let owner_col = document.getElementById("color_sel").value;
-    console.log(owner_col);
     //Check if this board exists
     all_boards_ref.child(`${board_name}/height`).once("value", (snapshot) => {
         show_db_get("Checking if board exists", snapshot.val());
@@ -353,7 +360,7 @@ function add_lobby() {
             let val = snapshot.val();
             show_db_get("Getting lobby info for add_lobby", val)
             if(val && val.goto) {
-                connect_to_match(val.goto, val.owner_col, val.owner_name, val.joiner_name, true, val.board_name)
+                connect_to_match(val.goto, val.owner_col, val.owner_name, val.joiner_name, true, val.board_name, val.seed)
             }
         });
     });
@@ -423,7 +430,7 @@ firebase.auth().onAuthStateChanged((user) => {
                         //Join this match
                         let owner = (match.o && match.o.uid === user_id);
                         let me = owner ? match.o : match.j, them = owner ? match.j : match.o;
-                        connect_to_match(mid, me.col, me.name, them.name, owner, match.board_name);
+                        connect_to_match(mid, me.col, me.name, them.name, owner, match.board_name, match.seed);
                         //Replay all moves
                         firebase.database().ref(`match/${mid}/moves`).once("value", (snapshot) => {
                             let all_moves = snapshot.val();
