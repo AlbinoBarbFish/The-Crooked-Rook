@@ -10,6 +10,7 @@
     <script src="refresh_moves.js"></script>
     <script src="style_data.js"></script>
     <script src="init.js"></script>
+    <script src="random.js"></script>
 
     <script src="boards/CCIT/Cannon.js"></script>
     <script src="boards/CCIT/No Step On Snek.js"></script>
@@ -19,7 +20,7 @@
     <script src="boards/CCIT/Segiztas Peak.js"></script>
 
     <script src="boards/Chess/Chess.js"></script>
-    <script src="boards/Chess/Chess960.js"></script>
+    <script src="boards/Chess/Chess5040.js"></script>
 
     <script src="boards/Historical/Chaturanga.js"></script>
     <script src="boards/Historical/Courier Chess.js"></script>
@@ -32,7 +33,14 @@
     <script src="boards/Shogi/Heian Shogi.js"></script>
     <script src="boards/Shogi/Sho Shogi.js"></script>
     <script src="boards/Shogi/Micro Shogi.js"></script>
-	
+    
+    <script src="boards/Compound Chess/Bird's Chess.js"></script>
+    <script src="boards/Compound Chess/Carrera's Chess.js"></script>
+    <script src="boards/Compound Chess/Capablanca Chess.js"></script>
+    <script src="boards/Compound Chess/Gothic Chess.js"></script>
+    <script src="boards/Compound Chess/Embassy Chess.js"></script>
+    <script src="boards/Compound Chess/Compound Shuffle Chess.js"></script>
+
     <title>The Crooked Rook</title>
     <link rel="icon" href="icon.png">
     <style>
@@ -56,7 +64,7 @@
     <!-- Header -->
     <div style="width: 100%; overflow:auto;">
         <div style="width: 50%; float: left;">
-            <p><b style="font-size: 30px">The Crooked Rook</b> Pre-Release 0.2.2</p>
+            <p><b style="font-size: 30px">The Crooked Rook</b>Pre-Release 0.2.4</p>
         </div>
         <div style="width: max-content; float: right;">
             <p id="name_p">Name:</p>
@@ -99,7 +107,8 @@
                 <option value="2">Historical</option>
                 <!--<option value="3">Regional</option>-->
                 <option value="4">CCIT</option>
-                <option value="5">Other</option>
+                <option value="5">Compound</option>
+                <option value="6">Other</option>
             </select>
             <select id="variantField" name="variantField"></select>
             <button onclick="load_variant_dropdown();">Load</button>
@@ -108,8 +117,10 @@
         <button onclick="document.getElementById('history').value = export_history();">Export History</button>
         <button onclick="view_move = 0; import_history(document.getElementById('history').value); render_board();">Import History</button>
         <input id="history" />
-        <br /> <br />
+        <br />
 
+        <h2 id="board_name_header">Board Name</h2>
+        <p id="board_description_header">Board Description</p>
         <button onClick="change_zoom(1);  render_board();">+</button>
         <button onClick="change_zoom(-1); render_board();">-</button>
         <button onClick="style_data.flip_board ^= 1; render_board()">Flip</button>
