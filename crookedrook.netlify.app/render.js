@@ -1,4 +1,4 @@
-﻿function render_board(){
+function render_board(){
     let c = document.getElementById("board_canvas");
     let ctx = c.getContext("2d");
 
