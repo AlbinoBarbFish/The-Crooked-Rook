@@ -51,18 +51,46 @@ function update_all_boards() {
     }
 }
 function add_files_to_dropdown() {
-    let parent = document.getElementById("variantField");
+    let variant_dropdown = document.getElementById("variantField");
+    let variant_file = document.getElementById("variant_file");
     let category = document.getElementById("categoryField");
-    parent.innerHTML = "";
-    for (let a = 0; a < preset_variants[Number(category.value)].length; a++) {
-        var temp = new Option();
-        temp.value = a;
-        temp.innerHTML = preset_variants[Number(category.value)][a].name;
-        //console.log(preset_variants[Number(category.value)][a].name);
-        //console.log(JSON.stringify(preset_variants[Number(category.value)][a]));
-        parent.appendChild(temp);
+    let cat_num = Number(category.value);
+    if(cat_num < 0) {
+        variant_file.style.display="inline";
+        variant_dropdown.style.display="none";
+    }
+    else {
+        variant_file.style.display="none";
+        variant_dropdown.style.display="inline";
+        variant_dropdown.innerHTML = "";
+        for (let a = 0; a < preset_variants[cat_num].length; a++) {
+            var temp = new Option();
+            temp.value = a;
+            temp.innerHTML = preset_variants[cat_num][a].name;
+            variant_dropdown.appendChild(temp);
+        }
     }
 }
+function load_variant() {
+    let category = Number(document.getElementById("categoryField").value);
+    if(category < 0) {
+        var file = document.getElementById("variant_file").files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = function (evt) {
+                start_game(JSON.parse(evt.target.result));
+            }
+            reader.onerror = function (evt) {
+                console.error("Couldn't read the file");
+            }
+        }
+    }
+    else {
+        start_game(preset_variants[category][document.getElementById('variantField').value]);
+    }
+}
+
 function load_board_textures() {
     add_image("board", "sq_dark");
     add_image("board", "sq_light");

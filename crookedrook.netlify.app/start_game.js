@@ -4,6 +4,7 @@ function start_game(json_data, seed) {
     }
     let rand = mulberry32(seed);
     game_data = JSON.parse(JSON.stringify(json_data));
+    game_data.seed = seed;
     if (game_data.name === undefined) { console.error("Variant must have a name"); return; }
     if (game_data.description === undefined) { game_data.description = ""; }
 	if (game_data.width === undefined) { game_data.width = 8; }
@@ -155,7 +156,7 @@ function start_game(json_data, seed) {
         hands: JSON.parse(JSON.stringify(game_data.starting_hands)),
 
         royals_killed: { white: 0, black: 0 },
-        victory: -1 //0 - White, 0.5 - Draw, 1 - Black, -1 - Undefined
+        victory: -1, //0 - White, 0.5 - Draw, 1 - Black, -1 - Undefined
     };
     temp_data = {
         selected: false,
@@ -639,10 +640,4 @@ function set_piece_space(piece, col, pos, rand, apply_fischer = false) {
     if (attributes.includes(attrib.burn_immune)) {
         board.burn_immune_ss.set_on(pos);
     }
-}
-
-function load_variant_dropdown() {
-    start_game(preset_variants
-        [document.getElementById("categoryField").value]
-        [document.getElementById('variantField').value]);
 }

@@ -64,11 +64,12 @@ const attrib = {
 const folders = {
 	chess: 0,
 	shogi: 1,
-	historical: 2,
-	regional: 3,
-	ccit: 4,
-	compound: 5,
-	other: 6
+	xiangqi: 2,
+	historical: 3,
+	regional: 4,
+	ccit: 5,
+	compound: 6,
+	other: 7
 }
 
 let preset_variants = [[],[],[],[],[],[], []];

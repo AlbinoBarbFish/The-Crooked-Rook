@@ -349,7 +349,7 @@ function print_ss(ss, width) {
 } 
 
 function export_history() {
-    let ret = "";
+    let ret = game_data.name + "," + game_data.seed;
     for (let a = 0; a < move_history.length; a++) {
         if (move_history[a].drop) {
             ret += "[" + move_history[a].piece + "," + Number(move_history[a].color) + "," + move_history[a].dest + "]";

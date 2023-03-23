@@ -70,6 +70,13 @@ let my_prop_ref, other_prop_ref;
 let my_res_ref, other_res_ref;
 let my_prop;
 
+function import_history_firebase(history) {
+    let name_and_seed = history.substring(0, history.indexOf("[")).split(",");
+    all_boards_ref.child(name_and_seed[0]).once("value", (snapshot) => {
+        start_game(snapshot.val(), Number(name_and_seed[1]));
+        import_history(history.substring(history.indexOf("[")));
+    });
+}
 
 function multiplayer_make_move(src_x, src_y, dst_x, dst_y, prom) {
     if(!in_multiplayer_game) {

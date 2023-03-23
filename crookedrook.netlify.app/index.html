@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 
-<!-- Mirrored from crookedrook.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Mar 2023 05:24:38 GMT -->
+<!-- Mirrored from crookedrook.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 23 Mar 2023 04:57:08 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
     <script src="Squareset.js"></script>
@@ -30,7 +30,9 @@
     <script src="boards/Historical/Courier%20Chess%20Start.js"></script>
     <script src="boards/Historical/Grant%20Acedrex.js"></script>
 
-    <script src="boards/Other/Xiangqi.js"></script>
+    <script src="boards/Xiangqi/Xiangqi.js"></script>
+    <script src="boards/Xiangqi/MiniXiangqi.js"></script>
+    <script src="boards/Xiangqi/Manchu%20Chess.js"></script>
 
     <script src="boards/Shogi/Shogi.js"></script>
     <script src="boards/Shogi/Heian%20Shogi.js"></script>
@@ -107,18 +109,21 @@
             <select id="categoryField" onchange="add_files_to_dropdown()">
                 <option value="0">Chess</option>
                 <option value="1">Shogi</option>
-                <option value="2">Historical</option>
-                <!--<option value="3">Regional</option>-->
-                <option value="4">CCIT</option>
-                <option value="5">Compound</option>
-                <option value="6">Other</option>
+                <option value="2">Xiangqi</option>
+                <option value="3">Historical</option>
+                <!--<option value="4">Regional</option>-->
+                <option value="5">CCIT</option>
+                <option value="6">Compound</option>
+                <option value="7">Other</option>
+                <option value="-1">From File</option>
             </select>
             <select id="variantField" name="variantField"></select>
-            <button onclick="load_variant_dropdown();">Load</button>
+            <input type="file" id="variant_file" style="display: none" accept=".json"/>
+            <button onclick="load_variant();">Load</button>
             <br /> <br />
         </div>
         <button onclick="document.getElementById('history').value = export_history();">Export History</button>
-        <button onclick="view_move = 0; import_history(document.getElementById('history').value); render_board();">Import History</button>
+        <button onclick="view_move = 0; import_history_firebase(document.getElementById('history').value); render_board();">Import History</button>
         <input id="history" />
         <br />
 
@@ -174,5 +179,5 @@
     <script>page_init()</script>
 </body>
 
-<!-- Mirrored from crookedrook.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Mar 2023 05:24:56 GMT -->
+<!-- Mirrored from crookedrook.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 23 Mar 2023 04:57:29 GMT -->
 </html>
