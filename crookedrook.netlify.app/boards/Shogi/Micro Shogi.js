@@ -13,7 +13,7 @@ preset_variants[folders.shogi].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]a",
+			move: "[0 1 1 1]a",
             attributes: [attrib.promote_on_attack],
             held_piece: "N"
 		},
@@ -40,7 +40,7 @@ preset_variants[folders.shogi].push({
             description: "Moves up as many spaces as it wants",
             sprite: "spear",
             symbol: "L",
-            move: "[0 -1 1 -1]Ba",
+            move: "[0 1 1 -1]Ba",
             attributes: [attrib.promote_on_attack],
             held_piece: "S"
         },
@@ -49,7 +49,7 @@ preset_variants[folders.shogi].push({
             description: "Japanese Knight. Jumps forward two spaces and sideways one. Promotes to Gold.",
             sprite: "knight",
 			symbol: "N",
-            move: "([1 -2 1 1],[-1 -2 1 1])a",
+            move: "([1 2 1 1],[-1 2 1 1])a",
             attributes: [attrib.promote_on_attack],
             held_piece: "p"
         },
@@ -58,7 +58,7 @@ preset_variants[folders.shogi].push({
             description: "Moves one step diagonally or forward. Promotes to Gold.",
             sprite: "star5",
             symbol: "S",
-            move: "([F],[0 -1 1 1])a",
+            move: "([F],[0 1 1 1])a",
             attributes: [attrib.promote_on_attack],
             held_piece: "L"
         },
@@ -67,7 +67,7 @@ preset_variants[folders.shogi].push({
             description: "Moves one step cardinally or forward-diagonal.",
             sprite: "shield",
             symbol: "G",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a",
+            move: "([W],[-1 1 1 1],[1 1 1 1])a",
             attributes: [attrib.promote_on_attack],
             held_piece: "R"
         },
@@ -84,7 +84,7 @@ preset_variants[folders.shogi].push({
             description: "Moves as a Gold.",
             sprite: "shield",
             symbol: "T",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a",
+            move: "([W],[-1 1 1 1],[1 1 1 1])a",
             attributes: [attrib.promote_on_attack],
             held_piece: "B"
         },

@@ -13,7 +13,7 @@ preset_variants[folders.shogi].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]a",
+			move: "[0 1 1 1]a",
             promotions: [{ white: 0, black: 1, to: ["Pawn", "+Pawn"], on: [events.enter, events.exit, events.between] }],
 		},
 		{
@@ -37,7 +37,7 @@ preset_variants[folders.shogi].push({
             description: "Moves up as many spaces as it wants",
             sprite: "spear",
             symbol: "l",
-            move: "[0 -1 1 -1]Ba",
+            move: "[0 1 1 -1]Ba",
             promotions: [{ white: 0, black: 1, to: ["Lance", "+Lance"], on: [events.enter, events.exit, events.between] }]
         },
 		{
@@ -45,7 +45,7 @@ preset_variants[folders.shogi].push({
             description: "Japanese Knight. Jumps forward two spaces and sideways one. Promotes to Gold.",
             sprite: "knight",
 			symbol: "n",
-            move: "([1 -2 1 1],[-1 -2 1 1])a",
+            move: "([1 2 1 1],[-1 2 1 1])a",
             promotions: [{ white: 0, black: 1, to: ["Knight", "+Knight"], on: [events.enter, events.exit, events.between] }]
         },
         {
@@ -53,7 +53,7 @@ preset_variants[folders.shogi].push({
             description: "Moves one step diagonally or forward. Promotes to Gold.",
             sprite: "star5",
             symbol: "s",
-            move: "([F],[0 -1 1 1])a",
+            move: "([F],[0 1 1 1])a",
             promotions: [{ white: 0, black: 1, to: ["Silver", "+Silver"], on: [events.enter, events.exit, events.between] }]
         },
         {
@@ -61,7 +61,7 @@ preset_variants[folders.shogi].push({
             description: "Moves one step cardinally or forward-diagonal.",
             sprite: "shield",
             symbol: "G",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a"
+            move: "([W],[-1 1 1 1],[1 1 1 1])a"
         },
 		{
             name: "King",
@@ -76,7 +76,7 @@ preset_variants[folders.shogi].push({
             description: "Promoted pawn. Moves as a Gold.",
             sprite: "shield",
             symbol: "P",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a",
+            move: "([W],[-1 1 1 1],[1 1 1 1])a",
             attributes: [attrib.transform_on_death],
             held_piece: 0
         },
@@ -103,7 +103,7 @@ preset_variants[folders.shogi].push({
             description: "Promoted lance. Moves as a Gold.",
             sprite: "shield",
             symbol: "L",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a",
+            move: "([W],[-1 1 1 1],[1 1 1 1])a",
             attributes: [attrib.transform_on_death],
             held_piece: 3
         },
@@ -112,7 +112,7 @@ preset_variants[folders.shogi].push({
             description: "Promoted knight. Moves as a Gold.",
             sprite: "shield",
             symbol: "N",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a",
+            move: "([W],[-1 1 1 1],[1 1 1 1])a",
             attributes: [attrib.transform_on_death],
             held_piece: 4
         },
@@ -121,7 +121,7 @@ preset_variants[folders.shogi].push({
             description: "Promoted silver. Moves as a Gold.",
             sprite: "shield",
             symbol: "S",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a",
+            move: "([W],[-1 1 1 1],[1 1 1 1])a",
             attributes: [attrib.transform_on_death],
             held_piece: 5
         }

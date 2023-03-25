@@ -72,7 +72,7 @@ function parse_term(term, term_index, sq, piece, col, angle) {
     for (let a = term_index; a < term.length; a++) {
         if (term[a].type === "pre") {
             //Check condition, possibly return
-            if (typeof (term[a].data) === "function" && term[a].data(col, sq)) {
+            if (typeof (term[a].data) === "function" && term[a].data(col, sq, piece)) {
                 return ss_or(ret, saved_ss);
             }
 

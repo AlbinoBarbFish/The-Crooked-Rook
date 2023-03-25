@@ -11,7 +11,7 @@ preset_variants[folders.xiangqi].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]a+z{0 1}[1 0 2 1]a",
+			move: "[0 1 1 1]a+z{0 1}[1 0 2 1]a",
         },
         {
             name: "Rook",
@@ -25,21 +25,21 @@ preset_variants[folders.xiangqi].push({
             description: "Xiangqi Cannon",
             sprite: "cannon",
             symbol: "c",
-            move: "[R]Bb[0 -1 1 -1]Bab+[R]Bae",
+            move: "[R]Bb[0 1 1 -1]Bab+[R]Bae",
         },
 		{
             name: "Mao",
             description: "Blockable Knight",
             sprite: "knight",
 			symbol: "n",
-			move: "[W]ae([1 -1 1 1],[-1 -1 1 1])a",
+			move: "[W]ae([1 1 1 1],[-1 1 1 1])a",
 		},
 		{
             name: "Elephant",
             description: "Moves exactly 2 spaces diagonally. Can be blocked. Cannot cross the river.",
             sprite: "elephant",
 			symbol: "e",
-			move: "[1 1 4 2]BaZ{1 0}+-[1 1 4 1]",
+			move: "[1 1 4 2]BaZ{1 0}+-[F]",
 		},
 		{
             name: "Advisor",

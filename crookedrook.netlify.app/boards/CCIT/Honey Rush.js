@@ -12,7 +12,7 @@ preset_variants[folders.ccit].push({
             sprite: "bishop",
             symbol: "B",
             notation: "BS",
-            move: "[B]ba+[0 -1 1 1]ae",
+            move: "[B]ba+[0 1 1 1]ae",
         },
         {
             name: "Bomber",
@@ -29,7 +29,7 @@ preset_variants[folders.ccit].push({
             sprite: "cauldron",
             symbol: "H",
             promotions: [{ white: 2, black: 1, to: ["E"], on: [events.enter] }],
-            move: "([2 -1 1 1],[-2 -1 1 1],[3 -1 1 1],[-3 -1 1 1])a",
+            move: "([2 1 1 1],[-2 1 1 1],[3 1 1 1],[-3 1 1 1])a",
         },
         {
             name: "Bear",
@@ -59,7 +59,7 @@ preset_variants[folders.ccit].push({
             sprite: "pawn",
             symbol: "p",
             notation: "",
-            move: "i[0 -1 1 2]Bae+[0 -1 1 1]ae+([1 -1 1 1],[-1 -1 1 1])ca",
+            move: "i[0 1 1 2]Bae+[0 1 1 1]ae+([1 1 1 1],[-1 1 1 1])ca",
             promotions: [{ white: 0, black: 0, to: ["B", "O", "R", "S"], on: [events.enter] }],
             attributes: [attrib.ep_captured, attrib.ep_capturer],
         },

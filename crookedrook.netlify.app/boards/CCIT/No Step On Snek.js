@@ -11,7 +11,7 @@ preset_variants[folders.ccit].push({
             description: "Can move passively to four squares: forward one or two, then sideways one. Captures like a pawn.",
             sprite: "snake",
 			symbol: "S",
-            move: "([1 -1 1 1],[-1 -1 1 1])a+([1 -2 1 1],[-1 -2 1 1])ea",
+            move: "([1 1 1 1],[-1 1 1 1])a+([1 2 1 1],[-1 2 1 1])ea",
 			promotions: [{white: 0, black: 1, to: ["H"], on: [events.enter]}]
 		},
 		{

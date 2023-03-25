@@ -4,12 +4,15 @@ const ends = {
 	bare_royal: 2,
 	stalemate: 3
 }
+const ends_str = ["royal_capture", "royal_extinction", "bare_royal", "stalemate"];
 const events = {
 	enter: 0,
 	exit: 1,
 	between: 2,
-	drop: 3
+	drop: 3,
+	self: 4
 }
+const events_str = ["enter", "exit", "between", "drop"];
 const attrib = {
 	ally_static: 0,
 	enemy_static: 1,
@@ -59,8 +62,16 @@ const attrib = {
 	pacifier: 45,
 	anchor: 46,
     empower: 47,
-    random_promotion: 48
+    random_promotion: 48,
+	dont_flip_on_death: 49
 }
+const attrib_str = ["ally_static", "enemy_static", "kill_ally", "save_enemy", "flip_this_on_attack", 
+"dont_flip_enemy", "fireball", "bomb", "save_self", "transform_on_death", "ep_capturer", "ep_captured",
+"castle_from", "castle_to", "pusher", "burn_passive", "burn_peaceful", "burn_attack", "burn_death",
+"burn_allies", "burn_immune", "coward", "child", "berzerk", "spawn_trail", "spawn_constant", "spawn_on_death",
+"copycat", "attacker_moves", "defender_moves", "tall", "iron", "silver", "bronze", "royal", "ghost",
+"flip_on_passive", "forced_step", "retreat", "bloodlust", "promote_on_attack", "kill_between",
+"muddy", "ghost_caster", "defender", "pacifier", "anchor", "empower", "random_promotion", "dont_flip_on_death"];
 const folders = {
 	chess: 0,
 	shogi: 1,
@@ -72,4 +83,7 @@ const folders = {
 	other: 7
 }
 
-let preset_variants = [[],[],[],[],[],[], []];
+let preset_variants = [];
+for(let a = 0; a < Object.keys(folders).length; a ++) {
+	preset_variants.push([]);
+}

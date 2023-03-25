@@ -13,7 +13,7 @@ preset_variants[folders.historical].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]ae+([1 -1 1 1],[-1 -1 1 1])ca",
+			move: "[0 1 1 1]ae+([1 1 1 1],[-1 1 1 1])ca",
             promotions: [{ white: 1, black: 0, to: ["F"], on: [events.enter] }],
 		},
 		{

@@ -24,8 +24,9 @@
             if (!on_board(a, b)) { continue; }
             let is_dark = (a + b + style_data.flip_colors) % 2;
             let sq = b * game_data.width + a;
-            if (game_data.mud.get(sq)) { ctx.fillStyle = is_dark ? style_data.dark_mud_col : style_data.light_mud_col; }
-            else if (game_data.etherial.get(sq)) { ctx.fillStyle = is_dark ? style_data.dark_etherial_col : style_data.light_etherial_col; }
+            if (game_data.highlight.get(sq)) { ctx.fillStyle = is_dark ? style_data.dark_highlight_col : style_data.light_highlight_col; }
+            else if (game_data.mud.get(sq)) { ctx.fillStyle = is_dark ? style_data.dark_mud_col : style_data.light_mud_col; }
+            else if (game_data.ethereal.get(sq)) { ctx.fillStyle = is_dark ? style_data.dark_ethereal_col : style_data.light_ethereal_col; }
             else if (game_data.pacifist.get(sq)) { ctx.fillStyle = is_dark ? style_data.dark_pacifist_col : style_data.light_pacifist_col; }
             else if (game_data.sanctuary.get(sq)) { ctx.fillStyle = is_dark ? style_data.dark_sanctuary_col : style_data.light_sanctuary_col; }
             else { ctx.fillStyle = is_dark ? style_data.dark_square_col : style_data.light_square_col; }
@@ -96,23 +97,27 @@
     //Draw squares indicating possible moves
     if (brd.victory === -1) {
         if (temp_data.hand_selected) {
-            draw_ss(ss_and(game_data.active_squares, ss_or(brd.white_ss, brd.black_ss).inverse()), document.getElementById('img_sq_canmove_sel'));
+            let drop_zone = get_drop_zone(temp_data.selected_position, temp_data.selected_side);
+            draw_ss(ss_and(drop_zone, ss_or(brd.white_ss, brd.black_ss).inverse()), document.getElementById('img_sq_canmove_sel'));
         }
         else if (temp_data.selected) {
             draw_ss(brd.can_move_ss[temp_data.selected_position], document.getElementById('img_sq_canmove_sel'));
         }
         else if ((mouse_sq_pos.y === -1 || mouse_sq_pos.y === game_data.height)) {
             let hover = highlighted_hand_piece(brd);
-            if (hover.piece != -1) {
+            if(hover.piece != -1 && slots_left(hover.piece, hover.color, brd)) {
                 let type = (hover.color === brd.turn) ? 'img_sq_canmove' : 'img_sq_canmove_turn';
                 if(in_multiplayer_game &&  brd.turn != my_col) { type = 'img_sq_canmove_turn'; }
-                let ss = ss_and(game_data.active_squares, ss_or(brd.white_ss, brd.black_ss).inverse());
+                let drop_zone = get_drop_zone(hover.piece, hover.color);
+                let ss = ss_and(drop_zone, ss_or(brd.white_ss, brd.black_ss).inverse());
                 draw_ss(ss, document.getElementById(type));
             }
         }
         else {
             let highlight = square_x + square_y * game_data.width;
-            if (highlight >= 0 && highlight < game_data.width * game_data.height && on_board(square_x, square_y)) {
+            let color = (brd.black_ss.get(highlight) && brd.white_ss.get(highlight)) ? brd.turn : board.black_ss.get(highlight);
+            if (can_move(color, brd) && highlight >= 0 &&
+                highlight < game_data.width * game_data.height && on_board(square_x, square_y)) {
                 let type = 'img_sq_canmove_turn';
                 if ((!brd.turn && brd.white_ss.get(highlight)) || (brd.turn && brd.black_ss.get(highlight))) {
                     type = 'img_sq_canmove';
@@ -149,6 +154,29 @@
     }
 }
 
+function get_drop_zone(piece_id, color) {
+    let piece = game_data.all_pieces[piece_id];
+    return piece.drop_to_zone ? game_data.zones[color ? piece.drop_to_zone.black : piece.drop_to_zone.white] :
+        game_data.drop_to_zone ? game_data.zones[color ? game_data.drop_to_zone.black : game_data.drop_to_zone.white] :
+        game_data.active_squares;
+}
+
+function can_move(color, brd) {
+    if(brd === undefined) {
+        brd = board;
+    }
+    //If game_data.force_drop and you have pieces in your hand, you can't move normally
+    if (game_data.force_drop && game_data.has_hand) {
+        let my_hand = color ? board.hands.black : board.hands.white;
+        for (let a = 0; a < my_hand.length; a ++) {
+            if (my_hand[a] > 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function highlighted_hand_piece(brd) {
     if(brd === undefined) {
         brd = board;
@@ -170,7 +198,6 @@ function highlighted_hand_piece(brd) {
 }
 
 function draw_sprite(sprite, x, y, width, height, color) {
-    //console.log(sprite);
     let c = document.getElementById("board_canvas");
     let ctx = c.getContext("2d");
     if (!color || color === 'rgb(255,255,255)') {

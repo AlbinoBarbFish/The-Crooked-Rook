@@ -11,7 +11,7 @@ preset_variants[folders.ccit].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]ae+([1 -1 1 1],[-1 -1 1 1])ca",
+			move: "[0 1 1 1]ae+([1 1 1 1],[-1 1 1 1])ca",
             promotions: [{ white: 0, black: 1, to: ["NSNR"], on: [events.enter] }],
 		},
 		{
@@ -33,7 +33,7 @@ preset_variants[folders.ccit].push({
             description: "Acts like a rook, but not backwards.",
             sprite: "gorilla",
             symbol: "R",
-            move: "([1 0 2 -1],[0 -1 1 -1])Ba",
+            move: "([1 0 2 -1],[0 1 1 -1])Ba",
         },
         {
             name: "Unicorn",

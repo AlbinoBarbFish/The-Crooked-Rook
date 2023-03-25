@@ -76,7 +76,7 @@ function get_slide_ss(start_x, start_y, delta_x, delta_y, angle, sym, len_max){
 		len_max = 256;
 	}
 	for(var a = 0; a < 8; a += 8/sym){
-		var d = get_rot(delta_x, delta_y, a+angle);
+		var d = get_rot(delta_x, -delta_y, a+angle);
 		//d=delta; the vector that we're sliding each step
 		for(let cx = start_x+d.x, cy = start_y+d.y, i=0; i < len_max; cx += d.x, cy += d.y, i ++){
 			if(!on_board(cx, cy)){ break; }

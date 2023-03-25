@@ -1,12 +1,9 @@
-preset_variants[folders.chess].push({
-    name: "Chess",
-    author: "Around 1475 in Valencia, Spain",
-    description: "Classic Chess, with some slight differences. Some endgame rules (50 move, repetition, etc) aren't implemented. Check/checkmate isn't enforced, you win by capturing the king. Since check isn't detected, you can castle from, through, and into check.",
-	width: 8,
-	height: 8,
-	wins: [ends.royal_capture],
-	draws: [ends.stalemate],
-    castle_length: 2,
+preset_variants[folders.other].push({
+    name: "Style",
+	description: "From top to bottom, the rows are highlighted, mud, etherial, pacifist, and sanctuary. <br />This is also the style priority; if a square has mud and sanctuary, it will render as mud.",
+	width: 7,
+	height: 7,
+	has_hand: true,
 
 	all_pieces: [
 		{
@@ -16,8 +13,6 @@ preset_variants[folders.chess].push({
             symbol: "p",
             notation: "",
 			move: "i[0 1 1 2]Bae+[0 1 1 1]ae+([1 1 1 1],[-1 1 1 1])ca",
-            promotions: [{ white: 1, black: 0, to: ["NSNR"], on: [events.enter] }],
-            attributes: [attrib.ep_captured, attrib.ep_capturer],
 		},
 		{
             name: "Rook",
@@ -25,7 +20,6 @@ preset_variants[folders.chess].push({
             sprite: "rook",
 			symbol: "R",
 			move: "[R]Ba",
-			attributes: [attrib.castle_to],
 		},
 		{
             name: "Knight",
@@ -53,14 +47,17 @@ preset_variants[folders.chess].push({
             description: "Moves one step in any direction. Can be checked and checkmated.",
             sprite: "king",
 			symbol: "K",
-            move: "[K]a+i[1 0 2 -1]BemP{Rook}",
-			attributes: [attrib.royal, attrib.castle_from],
+            move: "[K]a",
+			attributes: [attrib.royal],
 		},
 	],
-    setup: "bR bN bB bQ bK bB bN bR 8bp",
-    copy: "flip",
-	zones: [
-		"00000000 00000000 00000000 00000000 00000000 00000000 00000000 11111111",
-		"11111111 00000000 00000000 00000000 00000000 00000000 00000000 00000000",
-	]
+    setup: ". bR bN bB bQ bK",
+	starting_hands: {white: ["p"], black: ["p"]},
+    copy: "rotate",
+	active_squares: "0111110 1111111 1111111 1111111 1111111 1111111 0111110",
+	highlight: "0000000 1111111 0000000 0000000 0000000 0000000 0000000",
+	mud: "0000000 0000000 1111111 0000000 0000000 0000000 0000000",
+    ethereal: "0000000 0000000 0000000 1111111 0000000 0000000 0000000",
+    pacifist: "0000000 0000000 0000000 0000000 1111111 0000000 0000000",
+	sanctuary: "0000000 0000000 0000000 0000000 0000000 1111111 0000000",
 });

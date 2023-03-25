@@ -21,12 +21,25 @@ function show_db_get(message, data) {
         console.log(`db_get: ${message} (size: ${len}, total: ${total_bytes_fetched})`);
     }
 }
-//Todo: Make these show up on the website
+function remove_p(id) {
+    document.getElementById("message_div").removeChild(document.getElementById(id));
+}
+let message_count = 0;
 function show_error(message) {
-    console.error(message);
+    let new_p = document.createElement("p");
+    new_p.id = "message_"+message_count;
+    message_count ++;
+    new_p.style.background = "red";
+    new_p.innerHTML = `<button onclick="remove_p('${new_p.id}')">x</button> ${message}`;
+    document.getElementById("message_div").appendChild(new_p);
 }
 function show_message (message) {
-    console.log(message);
+    //console.log(message);
+    let new_p = document.createElement("p");
+    new_p.id = "message_"+message_count;
+    message_count ++;
+    new_p.innerHTML = `<button onclick="remove_p('${new_p.id}')">x</button> ${message}`;
+    document.getElementById("message_div").appendChild(new_p);
 }
 
 let all_boards_ref = firebase.database().ref(`boards`);

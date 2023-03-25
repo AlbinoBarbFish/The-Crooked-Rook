@@ -15,7 +15,7 @@ preset_variants[folders.compound].push({
             sprite: "pawn",
             symbol: "p",
             notation: "",
-			move: "i[0 -1 1 2]Bae+[0 -1 1 1]ae+([1 -1 1 1],[-1 -1 1 1])ca",
+			move: "i[0 1 1 2]Bae+[0 1 1 1]ae+([1 1 1 1],[-1 1 1 1])ca",
             promotions: [{ white: 1, black: 0, to: ["NSNR"], on: [events.enter] }],
             attributes: [attrib.ep_captured, attrib.ep_capturer],
 		},

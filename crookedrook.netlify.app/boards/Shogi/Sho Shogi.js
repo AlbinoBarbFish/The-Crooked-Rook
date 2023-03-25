@@ -12,7 +12,7 @@ preset_variants[folders.shogi].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]a",
+			move: "[0 1 1 1]a",
             promotions: [{ white: 0, black: 1, to: ["Pawn", "Gold"], on: [events.enter, events.exit, events.between] }],
 		},
 		{
@@ -36,7 +36,7 @@ preset_variants[folders.shogi].push({
             description: "Moves up as many spaces as it wants. Promotes to Gold.",
             sprite: "spear",
             symbol: "L",
-            move: "[0 -1 1 -1]Ba",
+            move: "[0 1 1 -1]Ba",
             promotions: [{ white: 0, black: 1, to: ["Lance", "Gold"], on: [events.enter, events.exit, events.between] }]
         },
 		{
@@ -44,7 +44,7 @@ preset_variants[folders.shogi].push({
             description: "Japanese Knight. Jumps forward two spaces and sideways one. Promotes to Gold.",
             sprite: "knight",
 			symbol: "N",
-            move: "([1 -2 1 1],[-1 -2 1 1])a",
+            move: "([1 2 1 1],[-1 2 1 1])a",
             promotions: [{ white: 0, black: 1, to: ["Knight", "Gold"], on: [events.enter, events.exit, events.between] }]
         },
         {
@@ -52,7 +52,7 @@ preset_variants[folders.shogi].push({
             description: "Moves one step diagonally or forward. Promotes to Gold.",
             sprite: "star5",
             symbol: "S",
-            move: "([F],[0 -1 1 1])a",
+            move: "([F],[0 1 1 1])a",
             promotions: [{ white: 0, black: 1, to: ["Silver", "Gold"], on: [events.enter, events.exit, events.between] }]
         },
         {
@@ -60,7 +60,7 @@ preset_variants[folders.shogi].push({
             description: "Moves one step cardinally or forward-diagonal.",
             sprite: "shield",
             symbol: "G",
-            move: "([W],[-1 -1 1 1],[1 -1 1 1])a"
+            move: "([W],[-1 1 1 1],[1 1 1 1])a"
         },
 		{
             name: "King",
@@ -89,7 +89,7 @@ preset_variants[folders.shogi].push({
             description: "Moves like a King, except not directly backwards. Non-royal, but promotes to King.",
             sprite: "elephant",
             symbol: "E",
-            move: "([F],[1 0 2 1],[0 -1 1 1])a",
+            move: "([F],[1 0 2 1],[0 1 1 1])a",
             promotions: [{ white: 0, black: 1, to: ["King"], on: [events.enter, events.exit, events.between] }]
         },
 	],

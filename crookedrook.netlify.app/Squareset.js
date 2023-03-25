@@ -2,7 +2,7 @@ class squareset {
     constructor(length, seed) {
         if (length === undefined) {
             length = 256;
-            console.error("Squareset created without length or copy");
+            show_error("Technical problem (bad ss constructor). You should report this in #bug-reports.");
         }
         if (isNaN(length)) {
             //Copy constructor
@@ -59,28 +59,12 @@ squareset.prototype.count_bits = function(){
 	}
 	return count;
 }
-squareset.prototype.count_bits_num = function(n){
-	let count = 0;
-	let temp = n;
-	while(temp != 0){
-		count ++;
-		temp &= temp-1;
-    }
-	return count;
-}
 squareset.prototype.get_ls1b = function(){
 	for(let a = 0; a < this.length; a ++){
 		if(this.get(a)){
 			return a;
 		}
 	}
-
-	//for(var a = 0; a < 8; a ++){
-	//	if(this.backingArray[a] != 0){
-	//		return this.count_bits_num(this.backingArray[a]^(this.backingArray[a]-1))-1;
-	//	}
-	//}
-	//return 0; 
 }
 squareset.prototype.is_zero = function() {
     for (let a = 0; a < this.backingArray.length; a++){
@@ -120,17 +104,6 @@ squareset.prototype.ande = function(other){
 squareset.prototype.pop = function(){ //Sets ls1b to 0
 	this.set_off(this.get_ls1b());
 }
-/*function ss_and(ss1, ss2) {
-    if (ss1 === undefined || ss2 === undefined) {
-        console.log("ss and is broken");
-        return new squareset();
-    }
-    let ret = new squareset(ss1.length);
-    for (let a = 0; a < ss1.backingArray.length; a++){
-		ret.backingArray[a] = ss1.backingArray[a] & ss2.backingArray[a];
-	}
-	return ret;
-}*/
 function ss_and(...args) {
     let ret = new squareset(args[0]);
     for (let a = 1; a < args.length; a++) {
@@ -138,17 +111,6 @@ function ss_and(...args) {
     }
     return ret;
 }
-/*function ss_or(ss1, ss2) {
-    if (ss1 === undefined || ss2 === undefined) {
-        console.log("ss or is broken");
-        return new squareset();
-    }
-    let ret = new squareset(ss1.length);
-    for (let a = 0; a < ss1.backingArray.length; a++) {
-        ret.backingArray[a] = ss1.backingArray[a] | ss2.backingArray[a];
-	}
-	return ret;
-}*/
 function ss_or(...args) {
     let ret = new squareset(args[0]);
     for (let a = 1; a < args.length; a++) {

@@ -33,14 +33,14 @@ preset_variants[folders.ccit].push({
             description: "Can canon cannon can can- can on a can ? Moves and captures like a rook.Have to jump over a pieces to capture.",
             sprite: "cannon",
             symbol: "C",
-            move: "[R]Bb[0 -1 1 -1]Bab+[R]Bae",
+            move: "[R]Bb[0 1 1 -1]Bab+[R]Bae",
         },
         {
             name: "Spear Thrower",
             description: "Who needs cannon when all you need is a well aimed spear? Acts like a Bishop, but requires a piece to jump over. Additionally can move like a king.",
             sprite: "spear",
             symbol: "S",
-            move: "[B]Bb[0 -1 1 -1]Bab+[B]Bae+[K]ae",
+            move: "[B]Bb[0 1 1 -1]Bab+[B]Bae+[K]ae",
         },
         {
             name: "Boulder",

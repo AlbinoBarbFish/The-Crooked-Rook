@@ -12,7 +12,7 @@ preset_variants[folders.historical].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]ae+([1 -1 1 1],[-1 -1 1 1])ba",
+			move: "[0 1 1 1]ae+([1 1 1 1],[-1 1 1 1])ba",
             promotions: [{ white: 1, black: 0, to: ["M"], on: [events.enter] }],
 		},
 		{
@@ -21,10 +21,7 @@ preset_variants[folders.historical].push({
             sprite: "rook",
 			symbol: "R",
 			move: "[R]Ba",
-			promotions: [],
 			attributes: [attrib.castle_to],
-			held_piece: -1,
-			held_move: ""
 		},
 		{
             name: "Ashva",

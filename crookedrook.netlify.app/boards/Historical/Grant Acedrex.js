@@ -13,7 +13,7 @@ preset_variants[folders.historical].push({
             sprite: "peasant",
             symbol: "p",
             notation: "",
-			move: "[0 -1 1 1]ae+([1 -1 1 1],[-1 -1 1 1])ba",
+			move: "[0 1 1 1]ae+([1 1 1 1],[-1 1 1 1])ba",
             promotions: [
                 { white: 1, black: 0, to: ["R"], on: [events.enter] },
                 { white: 3, black: 2, to: ["L"], on: [events.enter] },
@@ -35,14 +35,14 @@ preset_variants[folders.historical].push({
             description: "Moves to the first diagonal, then optionally outwards like a rook.",
             sprite: "griffin",
             symbol: "G",
-            move: "[F]ase([1 -1 1 -1],[-1 -1 1 -1])Ba",
+            move: "[F]ase([1 1 1 -1],[-1 1 1 -1])Ba",
         },
         {
             name: "Unicorn",
             description: "Moves like a knight, then optionally outwards like a bishop.",
             sprite: "unicorn",
             symbol: "U",
-            move: "[N]ase[0 -1 1 -1]Ba",
+            move: "[N]ase[0 1 1 -1]Ba",
         },
         {
             name: "Lion",

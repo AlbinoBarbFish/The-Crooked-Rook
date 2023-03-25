@@ -5,22 +5,47 @@ function start_game(json_data, seed) {
     let rand = mulberry32(seed);
     game_data = JSON.parse(JSON.stringify(json_data));
     game_data.seed = seed;
-    if (game_data.name === undefined) { console.error("Variant must have a name"); return; }
+    if (game_data.name === undefined) { show_error("Variant must have a name"); return; }
     if (game_data.description === undefined) { game_data.description = ""; }
 	if (game_data.width === undefined) { game_data.width = 8; }
     if (game_data.height === undefined) { game_data.height = 8; }
     let size = game_data.width * game_data.height;
 	if (game_data.has_hand === undefined) { game_data.has_hand = false; }
+    if (game_data.snap_mode && !["clockwise", "counterclockwise", "orthogonal", "diagonal"].includes(game_data.snap_mode)) {
+        show_error("Snap mode not found: "+game_data.snap_mode);
+    }
 	if (game_data.turn_list === undefined) { game_data.turn_list = [false, true]; }
+    //Convert from letters/words to bools
+    for (let a = 0; a < game_data.turn_list.length; a ++) {
+        if (typeof(game_data.turn_list[a]) === "string") {
+            let word = game_data.turn_list[a].toLowerCase()
+            if (word === "w" || word === "white") {
+                game_data.turn_list[a] = false;
+            }
+            if (word === "b" || word === "black") {
+                game_data.turn_list[a] = true;
+            }
+        }
+    }
 	if (game_data.flip_colors === undefined) { game_data.flip_colors = false; }
 	if (game_data.can_pass === undefined) { game_data.can_pass = false; }
+    if (game_data.force_drop === undefined) { game_data.force_drop = false; }
+    if (game_data.destroy_on_capture === undefined) { game_data.destroy_on_capture = false; }
+    if (game_data.destroy_on_burn === undefined) { game_data.destroy_on_burn = false; }
 	if (game_data.wins === undefined) { game_data.wins = [ends.royal_capture]; }
+    to_magic_numbers(game_data.wins, ends_str, "Win condition");
 	if (game_data.draws === undefined) { game_data.draws = [ends.stalemate]; }
+    to_magic_numbers(game_data.draws, ends_str, "Draw condition");
+    if (game_data.wins.includes(ends.stalemate) && game_data.draws.includes(ends.stalemate)) {
+        let index = game_data.draws.indexOf(ends.stalemate);
+        if (index >= 0) {
+            game_data.draws.splice(index, 1);
+        }
+    }
 	if (game_data.next_turn_win === undefined) { game_data.next_turn_win = false; }
-	if (game_data.all_pieces === undefined) { console.error("Piece data must be defined"); return; }
-    if (game_data.setup === undefined) { console.error("Piece setup must be defined"); return; } //This remails a string
+	if (game_data.all_pieces === undefined) { show_error("Piece data must be defined"); return; }
+    if (game_data.setup === undefined) { show_error("Piece setup must be defined"); return; } //This remails a string
     if (game_data.starting_hands === undefined) { game_data.starting_hands = { white: [], black: [] }; }
-    if (game_data.castle_length === undefined) { game_data.castle_length = 2; }
     //Name-based hand filling
     else if (isNaN(game_data.starting_hands.white[0]) || isNaN(game_data.starting_hands.black[0])) {
         let new_white = [], new_black = [];
@@ -49,31 +74,32 @@ function start_game(json_data, seed) {
     for (let a = game_data.starting_hands.black.length; a < game_data.all_pieces.length; a++) {
         game_data.starting_hands.black.push(0);
     }
-    if (game_data.copy === undefined) { game_data.flip = ""; }
+    if (game_data.castle_length === undefined) { game_data.castle_length = 2; }
+    if (game_data.copy === undefined) { game_data.copy = ""; }
+    if (!["", "flip", "rotate"].includes(game_data.copy)) {
+        show_error("Copy type not found: "+game_data.copy);
+    }
 
     for (let a = 0; a < game_data.all_pieces.length; a++) {
         let piece = game_data.all_pieces[a];
-        if (piece.name === undefined) { console.error("All pieces must be named"); return; }
-        if (piece.symbol === undefined) { console.error("All pieces must have symbols"); return; }
-        if (piece.move === undefined) { console.error("All pieces must have moves"); return; }
+        if (piece.name === undefined) { show_error("All pieces must be named"); return; }
+        if (piece.symbol === undefined) { show_error("All pieces must have symbols"); return; }
+        if (piece.move === undefined) { show_error("All pieces must have moves"); return; }
+        if (piece.sprite === undefined) { show_error("All pieces must have a sprite"); return; }
         if (piece.description === undefined) { piece.description = ""; }
-        if (piece.sprite === undefined) {
-            piece.sprite = "";
-            piece.use_symbol = true;
-        } else {
-            piece.use_symbol = false;
-        }
         if (piece.promotions === undefined) { piece.promotions = []; }
+        for(let b = 0; b < piece.promotions.length; b ++) {
+            to_magic_numbers(piece.promotions[b].on, events_str, "Piece promotion event");
+        }
         if (piece.attributes === undefined) { piece.attributes = []; }
+        to_magic_numbers(piece.attributes, attrib_str, "Piece attribute");
         if (piece.held_piece === undefined) { piece.held_piece = -1; }
-        if (piece.held_move) { piece.held_move = string_to_mol_num(piece.held_move, mols); }
-        else { piece.held_move = 0; }
     }
     //Held pieces - string to id
     for (let a = 0; a < game_data.all_pieces.length; a++) {
         game_data.all_pieces[a].held_piece = name_to_piece_id(game_data.all_pieces[a].held_piece);
     }
-    //Piece upgrades - string to id
+    //Piece promotions - string to id
     for (let p = 0; p < game_data.all_pieces.length; p++) {
         let piece = game_data.all_pieces[p];
         for (let a = 0; a < piece.promotions.length; a++) {
@@ -108,12 +134,14 @@ function start_game(json_data, seed) {
         }
     }
 
+    if (game_data.highlight === undefined) { game_data.highlight = new squareset(size, 0); }
+    else { game_data.highlight = squareset_from_string(size, game_data.highlight); } //Convert string to SS
     if (game_data.mud === undefined) { game_data.mud = new squareset(size, 0); }
     else { game_data.mud = squareset_from_string(size, game_data.mud); } //Convert string to SS
     if (game_data.sanctuary === undefined) { game_data.sanctuary = new squareset(size); }
     else { game_data.sanctuary = squareset_from_string(size, game_data.sanctuary); } //Convert string to SS
-    if (game_data.etherial === undefined) { game_data.etherial = new squareset(size); }
-    else { game_data.etherial = squareset_from_string(size, game_data.etherial); } //Convert string to SS
+    if (game_data.ethereal === undefined) { game_data.ethereal = new squareset(size); }
+    else { game_data.ethereal = squareset_from_string(size, game_data.ethereal); } //Convert string to SS
     if (game_data.pacifist === undefined) { game_data.pacifist = new squareset(size); }
     else { game_data.pacifist = squareset_from_string(size, game_data.pacifist); } //Convert string to SS
     if (game_data.fischer_zones === undefined) { game_data.fischer_zones = []; }
@@ -244,6 +272,16 @@ function start_game(json_data, seed) {
     for (let a = 0; a < all_molecules.length; a++) {
         game_data.move_ss.push(generate_move_ss(all_molecules[a]));
     }
+    //Update molecules for held moves
+    for (let a = 0; a < game_data.all_pieces.length; a++) {
+        let piece = game_data.all_pieces[a];
+        if (piece.held_move && typeof(piece.held_move) === "string") {
+            console.log(piece.held_move);
+            console.log(all_molecules);
+            piece.held_move = string_to_mol_num(piece.held_move, all_molecules);
+            console.log(piece.held_move);
+        }
+    }
     //Load all piece sprites
     for (let a = 0; a < game_data.all_pieces.length; a++) {
         add_image("pieces", game_data.all_pieces[a].sprite);
@@ -261,6 +299,20 @@ function start_game(json_data, seed) {
     //The sprites might not be loaded yet, reload every 50ms for the next half second
     for (let a = 1; a < 11; a++) {
         setTimeout(() => { render_board(); }, 50*a);
+    }
+}
+
+function to_magic_numbers(arr, ref, str) {
+    for (let a = 0; a < arr.length; a ++) {
+        if (typeof (arr[a]) === "string") {
+            let index = ref.indexOf(arr[a]);
+            if (index === -1) {
+                show_error(str+" not found: "+arr[a]);
+            }
+            else {
+                arr[a] = index;
+            }
+        }
     }
 }
 
@@ -297,6 +349,7 @@ function cloneBoard(brd) {
     Object.setPrototypeOf(ret.tall_ss, squareset.prototype);
     Object.setPrototypeOf(ret.passive_burn_ss, squareset.prototype);
     Object.setPrototypeOf(ret.burn_immune_ss, squareset.prototype);
+    Object.setPrototypeOf(ret.constant_spawn_ss, squareset.prototype);
     for (let a = 0; a < ret.can_move_ss.length; a++) {
         Object.setPrototypeOf(ret.can_move_ss[a], squareset.prototype);
     }
@@ -378,6 +431,23 @@ function string_to_term(string, mols) {
             term.push({type: "pre", data: (col, pos) => { return !game_data.zones[col ? nums.num2 : nums.num1].get(pos); } });
             a = nums.pos;
         }
+        else if (string[a] === "r") {
+            let piece_data = pieces_in_bracket(string, a + 1);
+            term.push({ type: "pre", data: (col) => {
+                for(let a = 0; a < piece_data.pieces.length; a ++) {
+                    if(!slots_left(piece_data.pieces[a], col)) {
+                        return true;
+                    }
+                }
+                return false;
+            }});
+            a = piece_data.pos;
+        }
+        else if(string[a] === "u") {
+            term.push({ type: "pre", data: (col, pos, id) => {
+                return ss_and(col ? board.black_ss : board.white_ss, board.piece_ss[id]).count_bits() > 1;
+            }})
+        }
         //Post-conditions
         //Data is a lambda that returns all squares it can't land on
         else if (string[a] === "a") { term.push({ type: "post", 
@@ -406,7 +476,7 @@ function string_to_term(string, mols) {
             term.push({
                 type: "post", data: (col, pos, current_moves) => {
                     let ret = new squareset(game_data.width * game_data.height);
-                    let stoppers = new squareset(ss_and(ss_or(ss_and(board.solid_ss, game_data.etherial.inverse()), game_data.mud), current_moves));
+                    let stoppers = new squareset(ss_and(ss_or(ss_and(board.solid_ss, game_data.ethereal.inverse()), game_data.mud), current_moves));
                     for (; !stoppers.is_zero(); stoppers.pop()) {
                         ret.ore(game_data.bnb_ss[pos][stoppers.get_ls1b()]);
                     }
@@ -427,7 +497,7 @@ function string_to_term(string, mols) {
         else if (string[a] === "O") {
             let nums = get_2_nums(string, a + 1);
             term.push({ type: "post", data: (col) => { return col? game_data.zones[nums.num2] : game_data.zones[nums.num1] } });
-            a = data.pos;
+            a = nums.pos;
         }
         //Misc
         else if (string[a] === "s") { term.push({ type: "stop"}); }
@@ -639,5 +709,8 @@ function set_piece_space(piece, col, pos, rand, apply_fischer = false) {
     }
     if (attributes.includes(attrib.burn_immune)) {
         board.burn_immune_ss.set_on(pos);
+    }
+    if (attributes.includes(attrib.spawn_constant)) {
+        board.constant_spawn_ss.set_on(pos);
     }
 }
