@@ -104,11 +104,14 @@ function multiplayer_make_move(src_x, src_y, dst_x, dst_y, prom) {
     my_prop = data;
 }
 
-function multiplayer_make_drop(piece, color, dest) {
+function multiplayer_make_drop(piece, color, dest, promotion) {
     if(!in_multiplayer_game) {
         show_error("Trying to make multiplayer drop when not in a room");
     }
     let data = {piece, color, dest};
+    if (promotion != undefined) {
+        data.promotion = promotion;
+    }
     show_db_set("Setting my_prop (drop)");
     my_prop_ref.set(data);
     my_prop = data;
@@ -126,6 +129,7 @@ function resign() {
 //Pulls name automatically from name_input field
 function set_name() {
     let new_name = document.getElementById("name_input").value;
+    document.getElementById("name_input").value = "";
     if(typeof(new_name) != "string" || new_name.length < 1) {
         show_error("Name must be a non-empty string");
         return;
@@ -359,6 +363,7 @@ function add_lobby() {
         return;
     }
     let board_name = document.getElementById("board_name").value;
+    document.getElementById("board_name").value = "";
     let owner_col = document.getElementById("color_sel").value;
     //Check if this board exists
     all_boards_ref.child(`${board_name}/height`).once("value", (snapshot) => {

@@ -1,4 +1,5 @@
 preset_variants[folders.other].push({
+//const style_board = {
     name: "Style",
 	description: "From top to bottom, the rows are highlighted, mud, etherial, pacifist, and sanctuary. <br />This is also the style priority; if a square has mud and sanctuary, it will render as mud.",
 	width: 7,
@@ -51,7 +52,7 @@ preset_variants[folders.other].push({
 			attributes: [attrib.royal],
 		},
 	],
-    setup: ". bR bN bB bQ bK",
+    setup: ". bR bN bB bQ bK 18. nR",
 	starting_hands: {white: ["p"], black: ["p"]},
     copy: "rotate",
 	active_squares: "0111110 1111111 1111111 1111111 1111111 1111111 0111110",

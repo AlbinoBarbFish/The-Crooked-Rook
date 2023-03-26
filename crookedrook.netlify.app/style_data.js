@@ -1,4 +1,4 @@
-let style_data = {
+/*let style_data = {
     //Pieces
     white_col: 'rgb(255, 255, 255)',
     black_col: 'rgb(255, 0, 0)',
@@ -22,11 +22,37 @@ let style_data = {
     hand_col: 'rgb(85, 230, 119)',
     flip_colors: false,
     flip_board: false,
-    name_squares: false
-}
+    name_squares: false,
+    border: 0.05
+}*/
+let style_data = JSON.parse(`{
+    "white_col": "rgb(240, 240, 240)",
+    "black_col": "rgb(60, 60, 60)",
+    "neutral_col": "rgb(0, 200, 100)",
+    "light_highlight_col": "rgb(214, 111, 105)",
+    "dark_highlight_col": "rgb(113, 50, 47)",
+    "light_mud_col": "rgb(205, 148, 114)",
+    "dark_mud_col": "rgb(117, 70, 43)",
+    "light_ethereal_col": "rgb(98, 193, 221)",
+    "dark_ethereal_col": "rgb(50, 101, 109)",
+    "light_pacifist_col": "rgb(236, 202, 79)",
+    "dark_pacifist_col": "rgb(116, 100, 44)",
+    "light_sanctuary_col": "rgb(135, 198, 121)",
+    "dark_sanctuary_col": "rgb(60, 112, 48)",
+    "light_square_col": "rgb(255, 196, 136)",
+    "dark_square_col": "rgb(230, 115, 0)",
+    "bg_col": "rgb(255, 255, 255)",
+    "hand_col": "rgb(205, 137, 24)",
+    "flip_colors": false,
+    "flip_board": false,
+    "name_squares": false,
+    "border": 0.05
+  }`)
 
 function show_style_data() {
     document.getElementById("style_div").style.display = "block";
+    //preset_variants[folders.other].push(style_board);
+    //add_files_to_dropdown();
 }
 function hide_style_data() {
     document.getElementById("style_div").style.display = "none";

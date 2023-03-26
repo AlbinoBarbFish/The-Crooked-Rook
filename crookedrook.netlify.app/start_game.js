@@ -285,6 +285,9 @@ function start_game(json_data, seed) {
     //Load all piece sprites
     for (let a = 0; a < game_data.all_pieces.length; a++) {
         add_image("pieces", game_data.all_pieces[a].sprite);
+        if(game_data.all_pieces[a].mini_sprite != undefined) {
+            add_image("pieces", game_data.all_pieces[a].mini_sprite);
+        }
     }
     //Style data
     if (game_data.flip_colors) { style_data.flip_colors = true; }
@@ -446,6 +449,18 @@ function string_to_term(string, mols) {
         else if(string[a] === "u") {
             term.push({ type: "pre", data: (col, pos, id) => {
                 return ss_and(col ? board.black_ss : board.white_ss, board.piece_ss[id]).count_bits() > 1;
+            }})
+        }
+        else if(string[a] === "h") {
+            term.push({ type: "pre", data: (col) => {
+                if (!game_data.has_hand) {
+                    return true;
+                }
+                let opp_hand = col ? board.hands.white : board.hands.black;
+                for (let a = 0; a < opp_hand.length; a ++) {
+                    if(opp_hand[a] > 0) { return false; }
+                }
+                return true;
             }})
         }
         //Post-conditions

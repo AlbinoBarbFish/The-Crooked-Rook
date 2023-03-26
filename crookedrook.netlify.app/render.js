@@ -36,6 +36,12 @@
                 y = height_px * (game_data.height - b - 1 + game_data.has_hand);
             }
             ctx.fillRect(x, y, width_px, height_px);
+            //Border
+            if (style_data.border) {
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = style_data.border*width_px;
+                ctx.strokeRect(x, y, width_px, height_px);
+            }
             //Square names
             if (style_data.name_squares) {
                 ctx.font = "12px serif";
@@ -49,6 +55,13 @@
         ctx.fillStyle = style_data.hand_col;
         ctx.fillRect(0, 0, c.width, height_px);
         ctx.fillRect(0, c.height-height_px, c.width, height_px);
+    }
+    //Hand border
+    if (style_data.border) {
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = style_data.border*width_px;
+        ctx.strokeRect(0, 0, c.width, height_px);
+        ctx.strokeRect(0, c.height-height_px, c.width, height_px);
     }
 
     //Draw glow on last moved piece
@@ -67,6 +80,12 @@
         draw_ss(white_pieces, img, style_data.white_col);
         draw_ss(black_pieces, img, style_data.black_col);
         draw_ss(neutral_pieces, img, style_data.neutral_col);
+        if(game_data.all_pieces[a].mini_sprite != undefined) {
+            img = document.getElementById("img_" + game_data.all_pieces[a].mini_sprite);
+            draw_ss(white_pieces, img, style_data.white_col, true);
+            draw_ss(black_pieces, img, style_data.black_col, true);
+            draw_ss(neutral_pieces, img, style_data.neutral_col, true);
+        }
     }
     //Pieces in hand
     if (game_data.has_hand) {
@@ -75,6 +94,10 @@
             if (brd.hands.white[a] > 0) {
                 let img = document.getElementById("img_" + game_data.all_pieces[a].sprite)
                 draw_on_hand(img, col, false);
+                if (game_data.all_pieces[a].mini_sprite) {
+                    img = document.getElementById("img_" + game_data.all_pieces[a].mini_sprite);
+                    draw_on_hand(img, col, false, true);
+                }
                 if (brd.hands.white[a] > 1) {
                     draw_text_on_hand(brd.hands.white[a], col, false);
                 }
@@ -86,6 +109,10 @@
             if (brd.hands.black[a] > 0) {
                 let img = document.getElementById("img_" + game_data.all_pieces[a].sprite)
                 draw_on_hand(img, col, true);
+                if (game_data.all_pieces[a].mini_sprite) {
+                    img = document.getElementById("img_" + game_data.all_pieces[a].mini_sprite);
+                    draw_on_hand(img, col, true, true);
+                }
                 if (brd.hands.black[a] > 1) {
                     draw_text_on_hand(brd.hands.black[a], col, true);
                 }
@@ -262,7 +289,10 @@ function render_extras() {
         if (a === view_move - 1) {
             inner_p = "<b>" + inner_p + "</b>";
         }
-        row += inner_p + "&emsp;";
+        row += inner_p;
+        if(a < move_history.length - 1 && move_history[a+1].turn == num) {
+            row += "&emsp;";
+        }
     }
     if (row != "") {
         hist_div.innerHTML += "<p>" + num + " - " + row + "</p>";
@@ -296,6 +326,27 @@ function render_extras() {
         document.getElementById("resign_btn").style.display = "none";
     }
 }
+function print_history() {
+    let total = "";
+    let num = 1, row = "";
+    for (let a = 0; a < move_history.length; a++) {
+        if (move_history[a].turn != num) {
+            total += row+"\n";
+            num++;
+            row = "";
+        }
+        row += move_history[a].notation;
+        if(a < move_history.length - 1 && move_history[a+1].turn == num) {
+            row += "\t";
+        }
+    }
+    if (row != "") {
+        total += row+"\n";
+        num++;
+        row = "";
+    }
+    console.log(total);
+}
 
 function draw_on_square(img, pos1, pos2) {
     let c = document.getElementById("board_canvas");
@@ -319,7 +370,7 @@ function draw_on_square(img, pos1, pos2) {
     draw_sprite(img, pos_x, pos_y, width_px, height_px);
 }
 
-function draw_on_hand(img, x, is_black) {
+function draw_on_hand(img, x, is_black, is_mini = false) {
     let side = style_data.flip_board ? !is_black : is_black;
     //Set size data
     let width_px = canvas.width / game_data.width;
@@ -327,7 +378,9 @@ function draw_on_hand(img, x, is_black) {
     //Find x and y coordinates
     let pos_x = x * width_px;
     let pos_y = side ? 0 : canvas.height - height_px;
-    draw_sprite(img, pos_x, pos_y, width_px, height_px, is_black ? style_data.black_col : style_data.white_col);
+    let width = is_mini ? width_px * 0.4 : width_px;
+    let height = is_mini ? height_px * 0.4 : height_px;
+    draw_sprite(img, pos_x, pos_y, width, height, is_black ? style_data.black_col : style_data.white_col);
 }
 
 function draw_text_on_hand(txt, x, is_black) {
@@ -345,7 +398,7 @@ function draw_text_on_hand(txt, x, is_black) {
     ctx.fillText(txt, pos_x + 4, pos_y + 12);
 }
 
-function draw_ss(ss, img, col) {
+function draw_ss(ss, img, col, is_mini = false) {
     let width_px = canvas.width / game_data.width;
     let height_px = canvas.height / (game_data.height + (game_data.has_hand ? 2 : 0));
     for (let a = 0; a < Math.min(ss.length, game_data.width * game_data.height); a++) {
@@ -356,7 +409,9 @@ function draw_ss(ss, img, col) {
                 pos_x = width_px * (game_data.width - (a % game_data.width) - 1);
                 pos_y = height_px * (game_data.height - Math.floor(a / game_data.width) - 1 + game_data.has_hand);
             }
-            draw_sprite(img, pos_x, pos_y, width_px, height_px, col);
+            let width = is_mini ? width_px * 0.4 : width_px;
+            let height = is_mini ? height_px * 0.4 : height_px;
+            draw_sprite(img, pos_x, pos_y, width, height, col);
         }
     }
 }

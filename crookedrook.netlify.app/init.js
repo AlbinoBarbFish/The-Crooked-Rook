@@ -106,6 +106,18 @@ function download_all_boards() {
         }
     }
 }
+function download_board(folder, index) {
+    let str = JSON.stringify(stringify_consts(preset_variants[folder][index]), null, 2);
+    let file = new File([str], preset_variants[folder][index].name);
+    let url = URL.createObjectURL(file);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = preset_variants[folder][index].name+".json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(url);
+}
 
 function add_files_to_dropdown() {
     let variant_dropdown = document.getElementById("variantField");
@@ -173,12 +185,12 @@ function handle_make_move(src_x, src_y, dst_x, dst_y, prom) {
         make_move(src_x, src_y, dst_x, dst_y, prom);
     }
 }
-function handle_make_drop(piece, color, dest) {
+function handle_make_drop(piece, color, dest, prom) {
     if(in_multiplayer_game) {
-        multiplayer_make_drop(piece, color, dest);
+        multiplayer_make_drop(piece, color, dest, prom);
     }
     else {
-        make_drop_move(piece, color, dest);
+        make_drop_move(piece, color, dest, prom);
     }
 }
 
@@ -218,7 +230,7 @@ function handle_mouse_click() {
             if (brd.can_move_ss[temp_data.selected_position].get(mouse_sq)) {
                 //See how many promotions are possible
                 let src = temp_data.selected_position, dst = mouse_sq;
-                let promote_to = find_promotions(identify_piece(src, brd), src, dst, brd.white_ss.get(src), brd.black_ss.get(src));
+                let promote_to = find_promotions(identify_piece(src, brd), src, dst, brd.white_ss.get(src), brd.black_ss.get(src), brd);
                 let src_x = src % game_data.width, src_y = Math.floor(src / game_data.width);
                 let dst_x = mouse_sq_pos.x, dst_y = mouse_sq_pos.y;
                 if (promote_to.length < 2) {
